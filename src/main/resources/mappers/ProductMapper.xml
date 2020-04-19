@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lanxin.dao.ProductMapper" >
+  <resultMap id="BaseResultMap" type="com.lanxin.bean.Product" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="productName" property="productname" jdbcType="VARCHAR" />
+    <result column="productImg" property="productimg" jdbcType="VARCHAR" />
+    <result column="productPrice" property="productprice" jdbcType="DECIMAL" />
+    <result column="salePrice" property="saleprice" jdbcType="DECIMAL" />
+    <result column="uploadTime" property="uploadtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, productName, productImg, productPrice, salePrice, uploadTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.lanxin.bean.ProductExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from product
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from product
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lanxin.bean.ProductExample" >
+    delete from product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lanxin.bean.Product" >
+    insert into product (id, productName, productImg, 
+      productPrice, salePrice, uploadTime
+      )
+    values (#{id,jdbcType=BIGINT}, #{productname,jdbcType=VARCHAR}, #{productimg,jdbcType=VARCHAR}, 
+      #{productprice,jdbcType=DECIMAL}, #{saleprice,jdbcType=DECIMAL}, #{uploadtime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lanxin.bean.Product" >
+    insert into product
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="productname != null" >
+        productName,
+      </if>
+      <if test="productimg != null" >
+        productImg,
+      </if>
+      <if test="productprice != null" >
+        productPrice,
+      </if>
+      <if test="saleprice != null" >
+        salePrice,
+      </if>
+      <if test="uploadtime != null" >
+        uploadTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="productname != null" >
+        #{productname,jdbcType=VARCHAR},
+      </if>
+      <if test="productimg != null" >
+        #{productimg,jdbcType=VARCHAR},
+      </if>
+      <if test="productprice != null" >
+        #{productprice,jdbcType=DECIMAL},
+      </if>
+      <if test="saleprice != null" >
+        #{saleprice,jdbcType=DECIMAL},
+      </if>
+      <if test="uploadtime != null" >
+        #{uploadtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lanxin.bean.ProductExample" resultType="java.lang.Integer" >
+    select count(*) from product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update product
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.productname != null" >
+        productName = #{record.productname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productimg != null" >
+        productImg = #{record.productimg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productprice != null" >
+        productPrice = #{record.productprice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.saleprice != null" >
+        salePrice = #{record.saleprice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.uploadtime != null" >
+        uploadTime = #{record.uploadtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update product
+    set id = #{record.id,jdbcType=BIGINT},
+      productName = #{record.productname,jdbcType=VARCHAR},
+      productImg = #{record.productimg,jdbcType=VARCHAR},
+      productPrice = #{record.productprice,jdbcType=DECIMAL},
+      salePrice = #{record.saleprice,jdbcType=DECIMAL},
+      uploadTime = #{record.uploadtime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lanxin.bean.Product" >
+    update product
+    <set >
+      <if test="productname != null" >
+        productName = #{productname,jdbcType=VARCHAR},
+      </if>
+      <if test="productimg != null" >
+        productImg = #{productimg,jdbcType=VARCHAR},
+      </if>
+      <if test="productprice != null" >
+        productPrice = #{productprice,jdbcType=DECIMAL},
+      </if>
+      <if test="saleprice != null" >
+        salePrice = #{saleprice,jdbcType=DECIMAL},
+      </if>
+      <if test="uploadtime != null" >
+        uploadTime = #{uploadtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lanxin.bean.Product" >
+    update product
+    set productName = #{productname,jdbcType=VARCHAR},
+      productImg = #{productimg,jdbcType=VARCHAR},
+      productPrice = #{productprice,jdbcType=DECIMAL},
+      salePrice = #{saleprice,jdbcType=DECIMAL},
+      uploadTime = #{uploadtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
